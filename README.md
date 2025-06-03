@@ -2,7 +2,7 @@
 Este proyecto busca integraR el servidor BIND con la plataforma MISP para automatizar la actualización de las RPZ, con el propósito de bloquear en tiempo real dominios y FQDNs maliciosos, mejorando así la seguridad cibernética y el rendimiento del servicio DNS en micro, pequeñas y medianas empresas.
 Aquí tienes el resumen en español, listo para copiar y pegar en tu README de GitHub:
 
-# Servidor DNS BIND9 con RPZ y Página de Bloqueo Flask
+# Servidor DNS BIND9 con RPZ y MISP
 
 Este repositorio describe la configuración de un servidor DNS BIND9 en Ubuntu (versiones 22.04 y 24.04), incluyendo Zonas de Política de Respuesta (RPZ) para bloquear dominios maliciosos, una página de bloqueo personalizada basada en Flask y Nginx para hacer de proxy.
 
