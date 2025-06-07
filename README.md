@@ -1,5 +1,5 @@
 # Proyecto_MISP
-Este proyecto busca integraR el servidor BIND con la plataforma MISP para automatizar la actualización de las RPZ, con el propósito de bloquear en tiempo real dominios y FQDNs maliciosos, mejorando así la seguridad cibernética y el rendimiento del servicio DNS en micro, pequeñas y medianas empresas.
+Este proyecto busca integrar el servidor BIND con la plataforma MISP para automatizar la actualización de las RPZ, con el propósito de bloquear en tiempo real dominios y FQDNs maliciosos, mejorando así la seguridad cibernética y el rendimiento del servicio DNS en micro, pequeñas y medianas empresas.
 Aquí tienes el resumen en español, listo para copiar y pegar en tu README de GitHub:
 
 # Servidor DNS BIND9 con RPZ y MISP
