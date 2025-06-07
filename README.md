@@ -192,4 +192,7 @@ OPTIONS="-u bind -4"
 
 ```
 ## Extracción desde MISP
-La carpeta en este repositorio contiene los códigos para una extracción automatica de Indicadores de Compromiso desde MISP, con el objetivo de alimentar la RPZ de BIND de forma automatizada. La carpeta debe ser colocada en la "Carpeta Personal" de la máquina virtual y darle permisos de ejecución. Una vez realizado ello se puede ejecuar el sistema mediante el comando "sudo ./opciones.sh".
+La carpeta en este repositorio contiene los códigos para una extracción automatica de Indicadores de Compromiso desde MISP, con el objetivo de alimentar la RPZ de BIND de forma automatizada. La carpeta debe ser colocada en la "Carpeta Personal" de la máquina virtual y darle permisos de ejecución. Una vez realizado ello se puede ejecuar el sistema mediante el comando:
+```bash
+sudo ./opciones.sh
+```
