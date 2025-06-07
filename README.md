@@ -15,7 +15,7 @@ Este repositorio describe la configuración de un servidor DNS BIND9 en Ubuntu (
 - [Netplan](#netplan)
 - [MISP](#misp)
 - [RPZ (Response Policy Zone)](#rpz-response-policy-zone)
-  
+- [Extracción desde MISP](#extracción-desde-misp)  
 
 ## Configuración de Ubuntu
 
@@ -191,3 +191,5 @@ OPTIONS="-u bind -4"
 
 
 ```
+## Extracción desde MISP
+La carpeta en este repositorio contiene los códigos para una extracción automatica de Indicadores de Compromiso desde MISP, con el objetivo de alimentar la RPZ de BIND de forma automatizada. La carpeta debe ser colocada en la "Carpeta Personal" de la máquina virtual y darle permisos de ejecución. Una vez realizado ello se puede ejecuar el sistema mediante el comando "sudo ./opciones.sh".
