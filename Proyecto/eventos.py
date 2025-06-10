@@ -12,8 +12,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # === ARGUMENTOS ===
 parser = argparse.ArgumentParser(description="Buscar eventos en MISP y extraer dominios.")
 parser.add_argument("-s", "--since", required=True, help="Tiempo desde el cual buscar eventos (ej. 7d, 1m)")
-parser.add_argument("-A", "--analysis", type=int, default=2, help="Nivel de análisis (0=Inicial, 1=En proceso, 2=Final)")
-parser.add_argument("-T", "--threat", type=int, default=2, help="Nivel de amenaza máximo permitido (1=Alto, 2=Medio, 3=Bajo)")
+parser.add_argument("-A", "--analysis", type=int, default=0, help="Nivel de análisis (0=Inicial, 1=En proceso, 2=Final)")
+parser.add_argument("-T", "--threat", type=int, default=3, help="Nivel de amenaza máximo permitido (1=Alto, 2=Medio, 3=Bajo)")
 parser.add_argument("-o", "--output", default="salida.csv", help="Nombre del archivo de salida")
 args = parser.parse_args()
 # === FUNCIONES ===
@@ -51,7 +51,6 @@ try:
     result = misp.search(
         controller='events',
         date_from=from_date,
-        analysis=args.analysis,
         pythonify=True,
         limit=50000
     )
@@ -65,8 +64,8 @@ try:
         # Filtro más permisivo: se aplican por separado
         if event.threat_level_id > args.threat:
             continue
-        #if event.analysis < args.analysis:
-        #    continue
+        if event.analysis < args.analysis:
+            continue
         filtered.append(event)
 
     if not filtered:
@@ -79,10 +78,10 @@ try:
         #writer.writerow(["id", "tipo", "valor"])
         for event in filtered:
             for attr in event.attributes:
-                if attr.category == "Network activity" and attr.type in ["domain", "hostname", "url", "uri"]:
+                if attr.category in ["Network activity", "Payload delivery"] and attr.type in ["domain", "hostname", "url", "uri"]:
                     writer.writerow([event.id, attr.type, attr.value])
             for obj in event.objects:
-                if obj.get("meta-category") == "network":
+                if obj.get("meta-category") in ["network", "payload-delivery"]:
                     for attr in obj.get("Attribute", []):
                         if attr.get("type") in ["domain", "hostname", "url", "uri"]:
                             writer.writerow([event.id, attr["type"], attr["value"]])
