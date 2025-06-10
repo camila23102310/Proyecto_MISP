@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 env_file="misp_vars.env"
 if [ -f "$env_file" ]; then
 	while IFS= read -r line; do
@@ -53,136 +53,163 @@ output="resultados.csv"
 > "$output"
 
 # Ejecutar script Python con los parámetros proporcionados por el usuario
-python3 500.py -o "$output" -s "$since_value" $A_param $T_param
+python3 eventos.py -o "$output" -s "$since_value" $A_param $T_param
 #echo "Ejecutando: python3 bin/500.py -o "$output" -s "$since_value" $A_param $T_param"
 if [[ ! -s "$output" ]]; then
     echo "El archivo $output está vacío. No se obtuvieron resultados desde MISP."
     exit 1
 fi
+load_whitelist() {
+    declare -A wl_domains=()
+    if [ ! -f /etc/bind/whitelist.txt ]; then
+        echo "No existe el archivo whitelist.txt"
+        return 0
+    fi
+    while IFS= read -r wl_domain; do
+        wl_domain=$(echo "$wl_domain" | tr -d ' \t\r\n')
+        wl_domain="${wl_domain#www.}"
+        if [[ "$wl_domain" == google.* ]]; then
+            wl_domain="${wl_domain%%.*}"
+        fi
+        wl_domains["$wl_domain"]=1
+    done < /etc/bind/whitelist.txt
 
-is_whitelisted() {
-	local domain="$1"
-
-	if [ ! -f /etc/bind/whitelist.txt ]; then
-		return 1
-	fi
-
-	# Quitar 'www.' si lo tiene
-	local clean_domain="${domain#www.}"
-
-	# Extraer el base_domain para google (sin TLD)
-	local base_domain="$clean_domain"
-	if [[ "$clean_domain" == google.* ]]; then
-		base_domain="${clean_domain%%.*}"  # quitar todo después del primer punto
-	fi
-
-	while IFS= read -r wl_domain; do
-		wl_domain=$(echo "$wl_domain" | tr -d ' \t\r\n')
-		local clean_wl="${wl_domain#www.}"
-		local wl_base="$clean_wl"
-
-		if [[ "$clean_wl" == google.* ]]; then
-			wl_base="${clean_wl%%.*}"
-		fi
-
-		if [[ "$base_domain" == "$wl_base" ]]; then
-			return 0
-		fi
-	done < /etc/bind/whitelist.txt
-
-	return 1
+    declare -gA whitelist_domains
+    whitelist_domains=()
+    for key in "${!wl_domains[@]}"; do
+        whitelist_domains["$key"]=1
+    done
 }
+
+# Función para verificar si un dominio está en la whitelist
+is_whitelisted() {
+    local domain="$1"
+    local clean_domain="${domain#www.}"
+    local base_domain="$clean_domain"
+    if [[ "$clean_domain" == google.* ]]; then
+        base_domain="${clean_domain%%.*}"
+    fi
+    [[ -n "${whitelist_domains[$base_domain]}" ]]
+}
+
+# Llamar a load_whitelist antes de procesar
+load_whitelist
+
+# Ahora sí, procesas el output con la whitelist cargada
 if [ -f "$output" ]; then
-	output_file="atributos.txt"
-	> "$output_file"
-	zone_file="/etc/bind/db.rpz.local"
-	whitelist="/etc/bind/whitelist.txt"
-	
-	total_output_lines=$(wc -l < "$output")
-	echo "El archivo $output tiene $total_output_lines líneas."
-	echo "¿Cuántas líneas quieres procesar desde $output? (Presiona Enter para procesar todas)"
-	read -r lines_from_output
 
-	if [[ -z "$lines_from_output" || ! "$lines_from_output" =~ ^[0-9]+$ || "$lines_from_output" -gt "$total_output_lines" ]]; then
-		lines_from_output=$total_output_lines
-	fi
-	echo "Se procesarán $lines_from_output líneas."
+    output_file="atributos.txt"
+    > "$output_file"
+    zone_file="/etc/bind/db.rpz.local"
 
-	head -n "$lines_from_output" "$output" | awk -F',' '
-    	{
-        	# Limpiar espacios al inicio y final
-        	gsub(/^[ \t\r\n]+|[ \t\r\n]+$/, "", $2)
-        	gsub(/^[ \t\r\n]+|[ \t\r\n]+$/, "", $3)
-        	col2=tolower($2)
-        	if (col2 ~ /domain|hostname/) {
-            		print $3 "    IN CNAME ."
-        	} else if (col2 ~ /url|uri/) {
-            		gsub(/^https?:\/\//, "", $3)
-            		split($3, parts, "/")
-            		print parts[1] "    IN CNAME ."
-        	}
-        	# else {
-        	#     print "Valor inválido: " $3 > "/dev/stderr"
-        	# }
-    	}' | sort -u > "$output_file"
+    total_output_lines=$(wc -l < "$output")
+    echo "El archivo $output tiene $total_output_lines líneas."
+    echo "¿Cuántas líneas quieres procesar desde $output? (Presiona Enter para procesar todas)"
+    read -r lines_from_output
 
-    	echo "Extracción terminada. Resultados en $output_file"  
-    
-	total_lines=$(wc -l < "$output_file")
-	echo "Se detectaron $total_lines dominios/URLs únicos en atributos.txt."
-	before=$(cksum "$zone_file")
-	declare -A existing_domains
-	while IFS= read -r line; do
-		domain=$(echo "$line" | awk '{print $1}')
-	    # Evitar claves vacías
-	    	if [[ -n "$domain" ]]; then
-			existing_domains["$domain"]=1
-	    	fi
-	done < "$zone_file"
+    if [[ -z "$lines_from_output" || ! "$lines_from_output" =~ ^[0-9]+$ || "$lines_from_output" -gt "$total_output_lines" ]]; then
+        lines_from_output=$total_output_lines
+    fi
+    echo "Se procesarán $lines_from_output líneas."
 
-	# Leer dominios del archivo temporal de salida
-	while IFS= read -r line; do
-	    	domain_name=$(echo "$line" | awk '{print $1}')
+    head -n "$lines_from_output" "$output" | awk -F',' '
+    {
+        # Limpiar espacios en las columnas 2 y 3
+        gsub(/^[ \t\r\n]+|[ \t\r\n]+$/, "", $2)
+        gsub(/^[ \t\r\n]+|[ \t\r\n]+$/, "", $3)
+        
+        col2 = tolower($2)
+        domain = $3
 
-	    # Validar: no vacío y que tenga al menos un punto (dominio válido)
-	    	if [[ -z "$domain_name" || "$domain_name" != *.* ]]; then
-			echo "[INFO] Dominio inválido o vacío: '$domain_name'. Se omite."
-			continue
-	    	fi
+        # Si es URL o URI, quitar protocolo y extraer dominio base
+        if (col2 ~ /url|uri/) {
+            gsub(/^https?:\/\//, "", domain)
+            split(domain, parts, "/")
+            domain = parts[1]
 
-	    # Verificar whitelist
-	    	if is_whitelisted "$domain_name"; then
-			echo "[INFO] '$domain_name' está en la whitelist. Se omite."
-			continue
-	    	fi
+            # Si tiene puerto, eliminarlo
+            split(domain, domain_parts, ":")
+            domain = domain_parts[1]
+        }
 
-	    # Añadir solo si no existe ya
-	    	if [[ -z "${existing_domains[$domain_name]}" ]]; then
-			echo "$line" >> "$zone_file"
-			existing_domains["$domain_name"]=1
-			#echo "[INFO] Añadido: $domain_name"
-	    	fi
+        # Si es domain o hostname, también eliminar puerto si existe
+        if (col2 ~ /domain|hostname/) {
+            split(domain, domain_parts2, ":")
+            domain = domain_parts2[1]
+        }
 
-	done < "$output_file"
+        # Ignorar si es IP (con formato x.x.x.x)
+        if (domain ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/) {
+            next
+        }
 
-	after=$(cksum "$zone_file")
+        # Imprimir línea con formato RPZ
+        print domain "    IN CNAME ."
+    }
+    ' | sort -u > "$output_file"
 
-	
+    echo "Extracción terminada. Resultados en $output_file"
 
-	if [[ "$before" != "$after" ]]; then
-		current_serial=$(grep -A 1 'SOA' "$zone_file" | tail -n 1 | awk '{print $1}' | tr -d ';')
-		if [[ -z "$current_serial" ]]; then
-			echo "Error: No se pudo encontrar el número de serie actual."
-			exit 1
-		fi
-		new_serial=$((current_serial + 1))
-		sed -i "s/\([0-9]\+\)[[:space:]]*; Serial/${new_serial} ; Serial/" "$zone_file"
-		sudo rndc reload
-		echo "Zona recargada."
-	else
-		echo "No hubo cambios en la zona. No se recargó."
-	fi
+    total_lines=$(wc -l < "$output_file")
+    echo "Se detectaron $total_lines dominios/URLs únicos en atributos.txt."
 
-	rm -f "$output" "$output_file"
+    before=$(cksum "$zone_file")
+
+    declare -A whitelist_domains
+    load_whitelist
+
+    # Cargar dominios existentes en zona en memoria
+    declare -A existing_domains
+    while IFS= read -r line; do
+        domain=$(echo "$line" | awk '{print $1}')
+        if [[ -n "$domain" ]]; then
+            existing_domains["$domain"]=1
+        fi
+    done < "$zone_file"
+
+    # Preparar array para nuevas entradas
+    declare -a new_entries=()
+
+    while IFS= read -r line; do
+        domain_name=$(echo "$line" | awk '{print $1}')
+        if [[ -z "$domain_name" || "$domain_name" != *.* ]]; then
+            echo "[INFO] Dominio inválido o vacío: '$domain_name'. Se omite."
+            continue
+        fi
+
+        if is_whitelisted "$domain_name"; then
+            echo "[INFO] '$domain_name' está en la whitelist. Se omite."
+            continue
+        fi
+
+        if [[ -z "${existing_domains[$domain_name]}" ]]; then
+            new_entries+=("$line")
+            existing_domains["$domain_name"]=1
+        fi
+    done < "$output_file"
+
+    if [[ ${#new_entries[@]} -gt 0 ]]; then
+        printf "%s\n" "${new_entries[@]}" >> "$zone_file"
+    else
+        echo "No hay nuevas entradas para añadir."
+    fi
+
+    after=$(cksum "$zone_file")
+
+    if [[ "$before" != "$after" ]]; then
+        current_serial=$(grep -A 1 'SOA' "$zone_file" | tail -n 1 | awk '{print $1}' | tr -d ';')
+        if [[ -z "$current_serial" ]]; then
+            echo "Error: No se pudo encontrar el número de serie actual."
+            exit 1
+        fi
+        new_serial=$((current_serial + 1))
+        sed -i "s/\([0-9]\+\)[[:space:]]*; Serial/${new_serial} ; Serial/" "$zone_file"
+        sudo rndc reload
+        echo "Zona recargada."
+    else
+        echo "No hubo cambios en la zona. No se recargó."
+    fi
+
+    rm -f "$output" "$output_file"
 fi
 
