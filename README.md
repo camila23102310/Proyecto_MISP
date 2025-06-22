@@ -134,7 +134,7 @@ sudo vim /etc/bind/named.conf.local
 zone "rpz.local" {
     type master;
     file "/etc/bind/db.rpz.local";
-    allow-query { localhost; };
+    allow-query { localhost; 192.168.1.0/24; };
     allow-transfer { localhost; };
 };
 
