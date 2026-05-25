@@ -2,8 +2,8 @@
 
 # 🚀 Mi Proyecto
 
-<img src="https://img.shields.io/badge/Estado-En%20desarrollo-blue">
-<img src="https://img.shields.io/badge/Python-3.12-yellow">
+<img src="https://img.shields.io/badge/Estado-En%20desarrollo-pink">
+
 
 </div>
 
