@@ -1,4 +1,11 @@
+<div align="center">
 
+# 🚀 Mi Proyecto
+
+<img src="https://img.shields.io/badge/Estado-En%20desarrollo-blue">
+<img src="https://img.shields.io/badge/Python-3.12-yellow">
+
+</div>
 
 <h1>Proyecto_MISP</h1> 
 Este proyecto busca integrar el servidor BIND con la plataforma MISP para automatizar la actualización de las RPZ, con el propósito de bloquear en tiempo real dominios y FQDNs maliciosos, mejorando así la seguridad cibernética y el rendimiento del servicio DNS en micro, pequeñas y medianas empresas.
