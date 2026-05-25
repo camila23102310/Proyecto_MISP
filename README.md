@@ -5,9 +5,8 @@
 <img src="https://img.shields.io/badge/Estado-En%20desarrollo-pink">
 
 </div>
-
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/pin/?username=TUUSUARIO&repo=TUREPO"/>
+  <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2MwcWp2M244bnh2NTlienZkanNucHpwdnYxMndseGNubzM1aHNsdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wiTY1JMB6xvUUjuPRH/giphy.gif" width="400">
 </p>
 Este proyecto busca integrar el servidor BIND con la plataforma MISP para automatizar la actualización de las RPZ, con el propósito de bloquear en tiempo real dominios y FQDNs maliciosos, mejorando así la seguridad cibernética y el rendimiento del servicio DNS en micro, pequeñas y medianas empresas.
 
