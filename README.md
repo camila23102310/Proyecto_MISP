@@ -34,6 +34,14 @@ Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ub
 </td>
 </tr>
 </table>
+
+<img align="right" alt="Coding" width="320" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2MwcWp2M244bnh2NTlienZkanNucHpwdnYxMndseGNubzM1aHNsdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wiTY1JMB6xvUUjuPRH/giphy.gif">
+
+# 🛡️ DNS Threat Blocking with BIND9 + RPZ + MISP
+
+Este proyecto busca integrar el servidor **BIND9** con la plataforma **MISP** para automatizar la actualización de las **Response Policy Zones (RPZ)**, con el propósito de bloquear en tiempo real dominios y **FQDNs maliciosos**, mejorando así la seguridad cibernética y el rendimiento del servicio DNS en micro, pequeñas y medianas empresas.
+
+Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ubuntu 22.04 y 24.04**, incluyendo **zonas RPZ** para bloquear dominios maliciosos, una **página de bloqueo personalizada**, **Flask** para el backend y **Nginx** como proxy inverso.
 <h2>Tabla de Contenidos</h2>
 
 - [Configuración de Ubuntu](#configuración-de-ubuntu)
