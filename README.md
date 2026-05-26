@@ -20,7 +20,6 @@ Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ub
 <h2>Contenidos</h2>
 
 - [Características del entorno](#características-del-entorno)
-- [Guest Additions](#guest-additions)
 - [BIND9](#bind9)
 - [Netplan](#netplan)
 - [MISP](#misp)
@@ -60,29 +59,10 @@ Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ub
 </table>
 
 
-
-## Guest Additions
-
-
-<li>sudo apt update</li>
-<li>sudo apt install linux-headers-$(uname -r) build-essential dkms</li>
-<li>Dispositivos-Incertar CD</li>
-<li>clic derecho-abrir en terminal</li>
-<li>ls</li>
-<li>./autorun.sh</li>
-<li>reiniciar</li>
-
 ## BIND9
 ```bash
 sudo apt update && sudo apt install bind9 -y
 sudo systemctl status bind9
-sudo systemctl status ssh
-sudo apt-get install openssh-server
-cd /etc/bind
-sudo vim named.conf.options
-sudo apt-get install vim
-:wq
-sudo named-checkconf
 ```
 ## Netplan
 ```bash
