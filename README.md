@@ -37,8 +37,7 @@ Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ub
 <tr>
 <td width="50%">
 
-Se consideraron dos versiones: 22.04 y 24.04. En ambas versiones se consideró:
-
+* Sistema Operativo: Ubuntu 22.04 o 24.04
 * Memoria Base: 6000MB  
 * 2 procesadores  
 * Disco de 50GB  
@@ -47,7 +46,10 @@ Se consideraron dos versiones: 22.04 y 24.04. En ambas versiones se consideró:
 </td>
 
 <td width="50%" align="right">
-
+* Sistema Operativo: Ubuntu 24.04
+* Procesador: Broadcom BCM2712 (4 núcleos a 2.4 GHz) Cortex-A76 de 64-bit
+* Memoria RAM: 8 GB
+* Almacenamiento: Tarjeta microSD de 32 GB 
 </td>
 </tr>
 </table>
