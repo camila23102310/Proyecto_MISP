@@ -134,7 +134,7 @@ sudo nano /etc/bind/named.conf.options
 
 Reemplazar el contenido por:
 
-```bash
+```conf
 options {
 
         // Habilita el registro de consultas DNS
@@ -190,7 +190,7 @@ sudo vim /etc/bind/named.conf.local
 ```
 
 Agregar al archivo:
-```bash
+```conf
 // Definición de la zona RPZ (Response Policy Zone)
 zone "rpz.local" {
 
