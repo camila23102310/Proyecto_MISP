@@ -48,7 +48,7 @@ Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ub
 
 </td>
 
-<td width="50%" align="right">
+<td width="50%" >
 <ul>
 <li>Sistema Operativo: Ubuntu 24.04</li>
 <li>Procesador: Broadcom BCM2712 (4 núcleos a 2.4 GHz) Cortex-A76 de 64-bit</li>
