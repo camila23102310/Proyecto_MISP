@@ -61,8 +61,8 @@ Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ub
 
 ## BIND9
 ```bash
-sudo apt update && sudo apt install bind9 -y
-sudo systemctl status bind9
+sudo apt update && sudo apt install bind9 -y  # Instalar BIND9
+sudo systemctl status bind9                   # Revisar si el servicio está activo
 ```
 ## Netplan
 ```bash
