@@ -27,10 +27,11 @@ Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ub
 - [MISP](#misp)
 - [RPZ (Response Policy Zone)](#rpz-response-policy-zone)
 - [Extracción desde MISP](#extracción-desde-misp)  
+## Configuración de Ubuntu
 <table>
 <tr>
 <td width="50%">
-## Configuración de Ubuntu
+
 
 Para Ubuntu se consideraron dos versiones: 22.04 y 24.04. En ambas versiones se consideró:
 
