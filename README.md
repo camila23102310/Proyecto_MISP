@@ -285,6 +285,7 @@ Editar archivo de opciones de arranque de named
 ```bash
 sudo vim /etc/default/named
 ```
+El archivo debe contener:
 ```conf
 //Ejecutar BIND como usuario bind y forzar uso de IPv4
 OPTIONS="-u bind -4"
