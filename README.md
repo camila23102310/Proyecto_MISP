@@ -126,14 +126,34 @@ Username: admin@admin.test
 Password: admin
 ```
 ## RPZ
+Editar el archivo:
+
 ```bash
 sudo nano /etc/bind/named.conf.options
+```
 
+Reemplazar el contenido por:
+
+```conf
 options {
+
+        // Habilita el registro de consultas DNS
         querylog yes;
+
+       // Directorio de caché de BIND9
         directory "/var/cache/bind";
+
+        // Habilitar resolución recursiva
         recursion yes;
-        allow-recursion { localhost; tu red; };
+
+        // Permitir consultas desde localhost y red local
+        // localhost: la propia máquina
+        // tu_red: reemplazar por la red permitida
+        // Ejemplo: 192.168.1.0/24;
+        allow-recursion {
+                localhost;
+                tu red;
+        };
         // to talk to, you may need to fix the firewall to allow multipl
         // ports to talk.  See http://www.kb.cert.org/vuls/id/800113
 
@@ -150,14 +170,21 @@ options {
         // If BIND logs error messages about the root key being expired,
         // you will need to update your keys.  See https://www.isc.org/bind-keys
         //========================================================================
+        // Validación automática DNSSEC
         dnssec-validation auto;
 
+        // Escuchar peticiones desde cualquier interfaz
         listen-on { any; };
 
+        // Zona de políticas de respuesta (RPZ)
         response-policy {
-                 zone "rpz.local";
+                zone "rpz.local";
         };
 };
+```
+
+
+
 
 sudo vim /etc/bind/named.conf.local
 
