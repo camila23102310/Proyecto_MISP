@@ -21,7 +21,7 @@ Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ub
 
 - [Características del entorno](#características-del-entorno)
 - [BIND9](#bind9)
-- [Netplan](#netplan)
+- [Configuraciones de red ](#Configuraciones-de-red)
 - [MISP](#misp)
 - [RPZ (Response Policy Zone)](#rpz-response-policy-zone)
 - [Extracción desde MISP](#extracción-desde-misp)  
@@ -64,25 +64,42 @@ Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ub
 sudo apt update && sudo apt install bind9 -y  # Instalar BIND9
 sudo systemctl status bind9                   # Revisar si el servicio está activo
 ```
-## Netplan
+## Configuraciones de red 
+Se utilizará Netplan para configurar una dirección IP estática y especificar el servidor DNS, asegurando la correcta comunicación y funcionamiento de los servicios de red, como BIND9.
+
 ```bash
-sudo systemctl disable --now systemd-resolved
+# Deshabilitar el servicio systemd-resolved
+sudo systemctl disable --now systemd-resolved 
+# Acceder al directorio de configuración de Netplan
 cd /etc/netplan/
-sudo vim 01-network-manager-all.yaml
+# Editar el archivo de configuración de red
+sudo vim xxx.yaml
+# Configuración de red mediante Netplan
 network:
   version: 2
+
+  # Configuración de interfaces Ethernet
   ethernets:
-    enp0s3:
+    enp0s3:  # Nombre de la interfaz de red
+
+      # Configuración de dirección IP estática
       addresses:
-      - tu ip/24
+        - tu_ip/24
+
+      # Configuración del servidor DNS
       nameservers:
         addresses:
-        - tu ip  # Apunta a tu servidor BIN
-      routes:
-      -   to: default
-          via: tu default
+          - tu_ip  # Dirección IP del servidor BIND9
 
+      # Configuración de puerta de enlace predeterminada
+      routes:
+        - to: default
+          via: tu_default_gateway
+
+# Aplicar los cambios realizados en Netplan
 sudo netplan apply
+
+#revisar si se mantiene o no
 sudo rm resolv.conf
  /etc/resolv.conf.
 
