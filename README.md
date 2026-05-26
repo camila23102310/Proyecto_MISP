@@ -30,16 +30,15 @@ Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ub
 <table>
 <tr>
 <td width="50%">
+## Configuración de Ubuntu
 
-Este proyecto busca integrar el servidor **BIND9** con la plataforma **MISP** para automatizar la actualización de las **Response Policy Zones (RPZ)**, con el propósito de bloquear en tiempo real **dominios y FQDNs maliciosos**, mejorando así la seguridad cibernética y el rendimiento del servicio DNS en micro, pequeñas y medianas empresas.
+Para Ubuntu se consideraron dos versiones: 22.04 y 24.04. En ambas versiones se consideró:
 
-Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ubuntu 22.04 y 24.04**, incluyendo:
+* Memoria Base: 6000MB
+* 3 procesadores
+* Disco de 50GB
+* Nombre@nombre_de_la_computadora (formato de nombre de usuario/máquina)
 
-- 🔒 **Zonas RPZ** para bloquear dominios maliciosos  
-- ⚡ **Actualización automatizada desde MISP**  
-- 🌐 **Página de bloqueo personalizada**  
-- 🐍 **Flask** para el backend  
-- 🚀 **Nginx** como proxy inverso
 
 </td>
 
@@ -56,14 +55,7 @@ Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ub
 
 
 
-## Configuración de Ubuntu
 
-Para Ubuntu se consideraron dos versiones: 22.04 y 24.04. En ambas versiones se consideró:
-
-* Memoria Base: 6000MB
-* 3 procesadores
-* Disco de 50GB
-* Nombre@nombre_de_la_computadora (formato de nombre de usuario/máquina)
 
 
 
