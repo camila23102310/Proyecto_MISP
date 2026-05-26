@@ -134,7 +134,7 @@ sudo nano /etc/bind/named.conf.options
 
 Reemplazar el contenido por:
 
-```conf
+```bash
 options {
 
         // Habilita el registro de consultas DNS
@@ -183,17 +183,35 @@ options {
 };
 ```
 
+Editar el archivo:
 
-
-
+```bash
 sudo vim /etc/bind/named.conf.local
+```
 
+Agregar al archivo:
+```bash
+// Definición de la zona RPZ (Response Policy Zone)
 zone "rpz.local" {
+
+    // Indica que este servidor será el maestro (master) de la zona y tendrá el archivo original de configuración
     type master;
+
+    // Ruta del archivo de base de datos de la zona donde se almacenarán las reglas RPZ
     file "/etc/bind/db.rpz.local";
-    allow-query { localhost; 192.168.1.0/24; };
-    allow-transfer { localhost; };
+
+    //Permite realizar consultas DNS únicamente desde localhost y la red local especificada
+    allow-query {
+        localhost;
+        192.168.1.0/24;
+    };
+
+    // Restringe la transferencia de zona únicamente al propio servidor
+    allow-transfer {
+        localhost;
+    };
 };
+```
 
 sudo cp /etc/bind/db.empty /etc/bind/db.rpz.local
 sudo vim /etc/bind/db.rpz.local
