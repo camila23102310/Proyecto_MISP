@@ -19,15 +19,14 @@ Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ub
 
 <h2>Contenidos</h2>
 
-- [Configuración de Ubuntu](#configuración-de-ubuntu)
-  - [En la versión 22.04](#en-la-versión-2204)
+- [Características del entorno](#características-del-entorno)
 - [Guest Additions](#guest-additions)
 - [BIND9](#bind9)
 - [Netplan](#netplan)
 - [MISP](#misp)
 - [RPZ (Response Policy Zone)](#rpz-response-policy-zone)
 - [Extracción desde MISP](#extracción-desde-misp)  
-## Configuración de Ubuntu
+## Características del entorno
 
 <table>
 <tr>
@@ -38,10 +37,10 @@ Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ub
 <tr>
 <td width="50%">
 
-Para Ubuntu se consideraron dos versiones: 22.04 y 24.04. En ambas versiones se consideró:
+Se consideraron dos versiones: 22.04 y 24.04. En ambas versiones se consideró:
 
 * Memoria Base: 6000MB  
-* 3 procesadores  
+* 2 procesadores  
 * Disco de 50GB  
 * Nombre@nombre_de_la_computadora (formato de nombre de usuario/máquina)
 
@@ -52,14 +51,6 @@ Para Ubuntu se consideraron dos versiones: 22.04 y 24.04. En ambas versiones se 
 </td>
 </tr>
 </table>
-
-<img align="right" alt="Coding" width="320" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2MwcWp2M244bnh2NTlienZkanNucHpwdnYxMndseGNubzM1aHNsdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wiTY1JMB6xvUUjuPRH/giphy.gif">
-
-
-
-
-
-
 
 
 
