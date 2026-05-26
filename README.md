@@ -28,23 +28,26 @@ Este repositorio describe la configuración de un servidor **DNS BIND9** en **Ub
 - [RPZ (Response Policy Zone)](#rpz-response-policy-zone)
 - [Extracción desde MISP](#extracción-desde-misp)  
 ## Configuración de Ubuntu
+
 <table>
+<tr>
+<td width="50%" align="center"><strong>Virtual Box</strong></td>
+<td width="50%" align="center"><strong>Raspberry Pi 5</strong></td>
+</tr>
+
 <tr>
 <td width="50%">
 
-
 Para Ubuntu se consideraron dos versiones: 22.04 y 24.04. En ambas versiones se consideró:
 
-* Memoria Base: 6000MB
-* 3 procesadores
-* Disco de 50GB
+* Memoria Base: 6000MB  
+* 3 procesadores  
+* Disco de 50GB  
 * Nombre@nombre_de_la_computadora (formato de nombre de usuario/máquina)
-
 
 </td>
 
 <td width="50%" align="right">
-
 
 </td>
 </tr>
